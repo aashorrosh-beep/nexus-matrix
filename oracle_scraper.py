@@ -16,8 +16,6 @@ class TikTokEngagementAgent:
         print(f"[AGENT: TikTok] Scanning viral velocity for {category}...")
         await asyncio.sleep(1) # Simulate network request
         
-        # In production, this parses video metadata for #TikTokMadeMeBuyIt + category
-        return [
             {"product_name": f"{category} Smart LED Projector", "viral_coefficient": 9.4, "hashtag_views": 1500000},
             {"product_name": f"{category} Posture Corrector Pro", "viral_coefficient": 8.1, "hashtag_views": 850000},
             {"product_name": f"{category} Magnetic Wireless Charger", "viral_coefficient": 9.9, "hashtag_views": 3200000},
@@ -25,7 +23,7 @@ class TikTokEngagementAgent:
         ]
 
 class GoogleTrendsAgent:
-nano nexus_master.py    """
+    """
     Interfaces with Google Trends (via pytrends or custom API).
     Identifies 'Breakout' search terms to confirm that TikTok hype is translating into actual buying intent.
     """
