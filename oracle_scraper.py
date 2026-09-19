@@ -15,7 +15,7 @@ class TikTokEngagementAgent:
     async def scan_viral_products(self, category: str) -> List[dict]:
         print(f"[AGENT: TikTok] Scanning viral velocity for {category}...")
         await asyncio.sleep(1) # Simulate network request
-        
+        return [
             {"product_name": f"{category} Smart LED Projector", "viral_coefficient": 9.4, "hashtag_views": 1500000},
             {"product_name": f"{category} Posture Corrector Pro", "viral_coefficient": 8.1, "hashtag_views": 850000},
             {"product_name": f"{category} Magnetic Wireless Charger", "viral_coefficient": 9.9, "hashtag_views": 3200000},
@@ -106,12 +106,11 @@ async def run_oracle():
     print("\n--- FINAL ORACLE OUTPUT FOR NEXUS ROUTER ---")
     for category, items in daily_inventory.items():
         print(f"\n{category.upper()} STOREFRONT:")
-nano nexus_master.py
         for rank, item in enumerate(items, 1):
             print(f" #{rank} | SKU: {item['dropship_sku']} | Nexus Score: {item['nexus_score']}")
 
 if __name__ == "__main__":
-    asyncio.run(run_o
+    asyncio.run(run_oracle())
 
 
 
