@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -22,7 +23,7 @@ export default function DigitalStorefront() {
 
   useEffect(() => {
     setStatus(`LOADING ${activeStore.toUpperCase()}...`);
-    fetch(`http://localhost:5050/api/storefront/${activeStore}`)
+    fetch(`/${activeStore}.json')
       .then(res => res.json())
       .then(data => {
         if (data.items) {

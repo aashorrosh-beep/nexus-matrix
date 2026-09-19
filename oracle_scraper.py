@@ -1,5 +1,6 @@
 import asyncio
 import random
+import json
 from datetime import datetime
 from typing import List, Dict
 
@@ -16,10 +17,10 @@ class TikTokEngagementAgent:
         print(f"[AGENT: TikTok] Scanning viral velocity for {category}...")
         await asyncio.sleep(1) # Simulate network request
         return [
-            {"product_name": f"{category} Smart LED Projector", "viral_coefficient": 9.4, "hashtag_views": 1500000},
-            {"product_name": f"{category} Posture Corrector Pro", "viral_coefficient": 8.1, "hashtag_views": 850000},
-            {"product_name": f"{category} Magnetic Wireless Charger", "viral_coefficient": 9.9, "hashtag_views": 3200000},
-            {"product_name": f"{category} Hydro-Glow Serum", "viral_coefficient": 7.5, "hashtag_views": 600000},
+            {"product_name": f"{category.replace('_', ' ').title()} Smart LED Projector", "viral_coefficient": 9.4, "hashtag_views": 1500000},
+            {"product_name": f"{category.replace('_', ' ').title()} Posture Corrector Pro", "viral_coefficient": 8.1, "hashtag_views": 850000},
+            {"product_name": f"{category.replace('_', ' ').title()} Magnetic Wireless Charger", "viral_coefficient": 9.9, "hashtag_views": 3200000},
+            {"product_name": f"{category.replace('_', ' ').title()} Hydro-Glow Serum", "viral_coefficient": 7.5, "hashtag_views": 600000},
         ]
 
 class GoogleTrendsAgent:
@@ -97,20 +98,38 @@ class OracleEngine:
 # ---------------------------------------------------------
 async def run_oracle():
     oracle = OracleEngine()
-    # Testing with 2 categories to demonstrate speed
-    target_categories = ["Electronics", "Wellness"]
+    
+    # Updated to perfectly match the ALBS 13 Rooms Master Array
+    # Includes trading_cards_vault so the site loads perfectly on the very first screen
+    target_categories = ["tech_mobile_gear", "health_wellness_bar", "trading_cards_vault"] 
     
     # Restrict to top 7 items per category for maximum scarcity
     daily_inventory = await oracle.execute_daily_scrape(target_categories, limit=7)
     
     print("\n--- FINAL ORACLE OUTPUT FOR NEXUS ROUTER ---")
+    
     for category, items in daily_inventory.items():
         print(f"\n{category.upper()} STOREFRONT:")
+        
+        # Format the items to include the exact data fields your React frontend expects
+        formatted_items = []
         for rank, item in enumerate(items, 1):
+            formatted_item = {
+                "id": item["dropship_sku"],
+                "name": item["product_name"],
+                "tag": "VIRAL TREND",
+                "stock": random.randint(3, 15),
+                "price": round(random.uniform(29.99, 149.99), 2),
+                "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+                "nexus_score": item["nexus_score"],
+                "dropship_sku": item["dropship_sku"]
+            }
+            formatted_items.append(formatted_item)
             print(f" #{rank} | SKU: {item['dropship_sku']} | Nexus Score: {item['nexus_score']}")
+
+        # Saves the generated data directly into the public folder for the website to read
+        with open(f"public/{category.lower()}.json", "w") as f:
+            json.dump({"items": formatted_items}, f)
 
 if __name__ == "__main__":
     asyncio.run(run_oracle())
-
-
-
